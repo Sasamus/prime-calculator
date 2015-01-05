@@ -1,4 +1,4 @@
-prime-calculator
+calculation-calculator
 ================
 
-A GUI multithreaded prime number calculator made in Java
+A GUI multithreaded calculation number calculator made in Java

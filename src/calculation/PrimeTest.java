@@ -1,4 +1,4 @@
-package prime;
+package calculation;
 
 /**
  * @author Albin Engström
@@ -6,11 +6,11 @@ package prime;
 public class PrimeTest {
 
 	/**
-	 * Tests if a number is a prime
+	 * Tests if a number is a calculation
 	 * 
 	 * @param number
 	 *            The number to test
-	 * @return true if number is a prime, else false
+	 * @return true if number is a calculation, else false
 	 */
 	public static boolean isPrime(long number) {
 		long limit = (long) Math.sqrt(number) + 1;
