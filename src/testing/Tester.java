@@ -1,5 +1,6 @@
 package testing;
 
+import gui.TestFrame;
 import calculation.NumberTester;
 
 /**
@@ -13,9 +14,14 @@ public class Tester {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		TestFrame testFrame = new TestFrame();
+		
 		NumberTester numberTester = new NumberTester();
 		
-		numberTester.testNumbers(0, 100);
+		numberTester.testNumbers(0, 100, testFrame);
+		
+		
 	}
 
 }
