@@ -1,6 +1,8 @@
 package calculation;
 
 /**
+ * Class for testing if a number is a prime
+ * 
  * @author Albin Engström
  */
 public class PrimeTest {
