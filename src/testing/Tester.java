@@ -19,7 +19,7 @@ public class Tester {
 		
 		NumberTester numberTester = new NumberTester();
 		
-		numberTester.testNumbers(1, 100, baseJFrame);
+		numberTester.testNumbers(1, 1000, baseJFrame);
 		
 		
 	}
