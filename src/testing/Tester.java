@@ -1,6 +1,6 @@
 package testing;
 
-import gui.TestFrame;
+import gui.BaseJFrame;
 import calculation.NumberTester;
 
 /**
@@ -15,11 +15,11 @@ public class Tester {
 	 */
 	public static void main(String[] args) {
 		
-		TestFrame testFrame = new TestFrame();
+		BaseJFrame baseJFrame = new BaseJFrame();
 		
 		NumberTester numberTester = new NumberTester();
 		
-		numberTester.testNumbers(0, 100, testFrame);
+		numberTester.testNumbers(1, 100, baseJFrame);
 		
 		
 	}
