@@ -3,6 +3,7 @@ package gui;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -50,13 +51,22 @@ public class BaseJFrame extends JFrame {
 	/**
 	 * Constructor
 	 */
-	public BaseJFrame() {
+	public BaseJFrame(long rangeStart, long rangeStop) {
 		
 		// Set the size of the BaseJFrame
 		setSize(WIDTH, HEIGHT);
 
 		// Set layout of BaseJFrame
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+		
+		// Create a JLabel to show the range for the user
+		JLabel jLabelRangeText = new JLabel("Primes in range " + rangeStart + "-" + rangeStop);
+		
+		// Align jLabelRangeText to the center
+		jLabelRangeText.setAlignmentX(CENTER_ALIGNMENT);
+		
+		// Add jLabelRangeText to jBaseFrame
+		add(jLabelRangeText);
 		
 		// Set jTextArea to Line Wrap
 		jTextArea.setLineWrap(true);

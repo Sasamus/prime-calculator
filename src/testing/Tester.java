@@ -15,11 +15,14 @@ public class Tester {
 	 */
 	public static void main(String[] args) {
 		
-		BaseJFrame baseJFrame = new BaseJFrame();
+		final long RANGE_START = 1;
+		final long RANGE_STOP = 10000;
+		
+		BaseJFrame baseJFrame = new BaseJFrame(RANGE_START, RANGE_STOP);
 		
 		NumberTester numberTester = new NumberTester();
 		
-		numberTester.testNumbers(1, 1000, baseJFrame);
+		numberTester.testNumbers(RANGE_START, RANGE_STOP, baseJFrame);
 		
 		
 	}
