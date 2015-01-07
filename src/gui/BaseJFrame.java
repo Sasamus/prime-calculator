@@ -5,6 +5,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -63,6 +64,11 @@ public class BaseJFrame extends JFrame {
 	 * A JButton for stop
 	 */
 	JButton jButtonStop = new JButton("Stop");
+	
+	/**
+	 * A JProgressBar to show how far the range have been processed
+	 */
+	JProgressBar jProgressBar = new JProgressBar(0, 100);
 
 	/**
 	 * Constructor
@@ -82,7 +88,7 @@ public class BaseJFrame extends JFrame {
 		// Align rangeText to the center
 		jLabelRangeText.setAlignmentX(CENTER_ALIGNMENT);
 
-		// Add rangeText to jBaseFrame
+		// Add rangeText to BaseJFrame
 		add(jLabelRangeText);
 
 		// Set jTextArea to Line Wrap
@@ -94,8 +100,17 @@ public class BaseJFrame extends JFrame {
 		// Set size of jScrollPane
 		jScrollPane.setSize(WIDTH, 100);
 
-		// Add jScrollPane to JBaseFrame
+		// Add jScrollPane to BaseJFrame
 		add(jScrollPane);
+		
+		// Set value of jProgressBar
+		jProgressBar.setValue(20);
+		
+		// Set jProgressbar to show the percentage in text
+		jProgressBar.setStringPainted(true);
+		
+		// Add jProgressBar to BaseJFrame
+		add(jProgressBar);
 
 		// Create a JPanel for the buttons
 		JPanel buttonPanel = new JPanel();
