@@ -17,12 +17,12 @@ public class BaseJFrame extends JFrame {
 	 * Generated serialVersionUID
 	 */
 	private static final long serialVersionUID = 372992706961939363L;
-	
+
 	/**
 	 * A final int to hold the width of the frame
 	 */
 	final int WIDTH = 800;
-	
+
 	/**
 	 * A final int to hold the height of the frame
 	 */
@@ -37,12 +37,12 @@ public class BaseJFrame extends JFrame {
 	 * A String to hold the text shown in jTextArea
 	 */
 	String jTextAreaText = "";
-	
+
 	/**
 	 * A JButton for start
 	 */
 	JButton jButtonStart = new JButton("Start");
-	
+
 	/**
 	 * A JButton for stop
 	 */
@@ -52,41 +52,42 @@ public class BaseJFrame extends JFrame {
 	 * Constructor
 	 */
 	public BaseJFrame(long rangeStart, long rangeStop) {
-		
+
 		// Set the size of the BaseJFrame
 		setSize(WIDTH, HEIGHT);
 
 		// Set layout of BaseJFrame
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		
+
 		// Create a JLabel to show the range for the user
-		JLabel jLabelRangeText = new JLabel("Primes in range " + rangeStart + "-" + rangeStop);
-		
+		JLabel jLabelRangeText = new JLabel("Primes in range " + rangeStart
+				+ "-" + rangeStop);
+
 		// Align jLabelRangeText to the center
 		jLabelRangeText.setAlignmentX(CENTER_ALIGNMENT);
-		
+
 		// Add jLabelRangeText to jBaseFrame
 		add(jLabelRangeText);
-		
+
 		// Set jTextArea to Line Wrap
 		jTextArea.setLineWrap(true);
-		
+
 		// Create a JScrollPane with jTextArea in it
 		JScrollPane jScrollPane = new JScrollPane(jTextArea);
-		
+
 		// Set size of jScrollPane
 		jScrollPane.setSize(WIDTH, 100);
-		
+
 		// Add jScrollPane to JBaseFrame
 		add(jScrollPane);
-		
+
 		// Create a JPanel for the buttons
 		JPanel buttonPanel = new JPanel();
-		
+
 		// Add the buttons to buttonPanel
 		buttonPanel.add(jButtonStart);
 		buttonPanel.add(jButtonStop);
-		
+
 		// Add buttonPanel to JBaseFrame
 		add(buttonPanel);
 
