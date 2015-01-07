@@ -29,14 +29,30 @@ public class BaseJFrame extends JFrame {
 	final int HEIGHT = 500;
 
 	/**
-	 * A JTextField
+	 * A JTextField to show the found primes
 	 */
 	JTextArea jTextArea = new JTextArea();
 
 	/**
-	 * A String to hold the text shown in jTextArea
+	 * A String to hold the text to show the found primes
 	 */
-	String jTextAreaText = "";
+	String foundPrimesText = "";
+
+	/**
+	 * A long to hold the number of found primes
+	 */
+	long nrFoundPrimes = 0;
+
+	/**
+	 * A String to hold the text show before nrFoundPrimes
+	 */
+	String nrFoundPrimesText = "Primes found: ";
+
+	/**
+	 * A JLabel to show the number of found primes
+	 */
+	JLabel jLabelNrFoundPrimes = new JLabel(nrFoundPrimesText
+			+ Long.toString(nrFoundPrimes));
 
 	/**
 	 * A JButton for start
@@ -63,10 +79,10 @@ public class BaseJFrame extends JFrame {
 		JLabel jLabelRangeText = new JLabel("Primes in range " + rangeStart
 				+ "-" + rangeStop);
 
-		// Align jLabelRangeText to the center
+		// Align rangeText to the center
 		jLabelRangeText.setAlignmentX(CENTER_ALIGNMENT);
 
-		// Add jLabelRangeText to jBaseFrame
+		// Add rangeText to jBaseFrame
 		add(jLabelRangeText);
 
 		// Set jTextArea to Line Wrap
@@ -88,6 +104,9 @@ public class BaseJFrame extends JFrame {
 		buttonPanel.add(jButtonStart);
 		buttonPanel.add(jButtonStop);
 
+		// Add jLabelNrFoundPrimes to buttonPanel
+		buttonPanel.add(jLabelNrFoundPrimes);
+
 		// Add buttonPanel to JBaseFrame
 		add(buttonPanel);
 
@@ -103,10 +122,17 @@ public class BaseJFrame extends JFrame {
 	 */
 	public void addNumber(long number) {
 
-		// Add number to jTextAreaText
-		jTextAreaText = jTextAreaText + " " + Long.toString(number);
+		// Add number to foundPrimesText
+		foundPrimesText = foundPrimesText + " " + Long.toString(number);
 
-		// Set the text of jTextField to the new jTextFieldText
-		jTextArea.setText(jTextAreaText);
+		// Set the text of jTextField to the new foundPrimesText
+		jTextArea.setText(foundPrimesText);
+
+		// Increment nrFoundPrimes by one
+		nrFoundPrimes++;
+
+		// Set the text of jLabelNrFoundPrimes to show the new nrFoundPrimes
+		jLabelNrFoundPrimes.setText(nrFoundPrimesText
+				+ Long.toString(nrFoundPrimes));
 	}
 }
