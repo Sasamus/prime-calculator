@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -64,16 +66,24 @@ public class BaseJFrame extends JFrame {
 	 * A JButton for stop
 	 */
 	JButton jButtonStop = new JButton("Stop");
-	
+
 	/**
 	 * A JProgressBar to show how far the range have been processed
 	 */
 	JProgressBar jProgressBar = new JProgressBar(0, 100);
 
 	/**
+	 * Number of numbers int the range
+	 */
+	long rangeSize;
+
+	/**
 	 * Constructor
 	 */
 	public BaseJFrame(long rangeStart, long rangeStop) {
+
+		// Set rangeSize
+		rangeSize = rangeStop - rangeStart + 1;
 
 		// Set the size of the BaseJFrame
 		setSize(WIDTH, HEIGHT);
@@ -102,13 +112,13 @@ public class BaseJFrame extends JFrame {
 
 		// Add jScrollPane to BaseJFrame
 		add(jScrollPane);
-		
+
 		// Set value of jProgressBar
-		jProgressBar.setValue(20);
-		
+		jProgressBar.setValue(0);
+
 		// Set jProgressbar to show the percentage in text
 		jProgressBar.setStringPainted(true);
-		
+
 		// Add jProgressBar to BaseJFrame
 		add(jProgressBar);
 
@@ -135,16 +145,20 @@ public class BaseJFrame extends JFrame {
 	 * @param number
 	 *            The number to add
 	 */
-	public void addNumber(long number) {
+	public void addNumbers(List<Long> numbers) {
 
-		// Add number to foundPrimesText
-		foundPrimesText = foundPrimesText + " " + Long.toString(number);
+		// Iterate through numbers
+		for (long number : numbers) {
+
+			// Add number to foundPrimesText
+			foundPrimesText = foundPrimesText + " " + Long.toString(number);
+
+			// Increment nrFoundPrimes by one
+			nrFoundPrimes++;
+		}
 
 		// Set the text of jTextField to the new foundPrimesText
 		jTextArea.setText(foundPrimesText);
-
-		// Increment nrFoundPrimes by one
-		nrFoundPrimes++;
 
 		// Set the text of jLabelNrFoundPrimes to show the new nrFoundPrimes
 		jLabelNrFoundPrimes.setText(nrFoundPrimesText

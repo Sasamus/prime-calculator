@@ -1,7 +1,7 @@
 package testing;
 
 import gui.BaseJFrame;
-import calculation.NumberTester;
+import calculation.NumberTesterSwingWorker;
 
 /**
  * Class to test things
@@ -14,17 +14,17 @@ public class Tester {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+
 		final long RANGE_START = 1;
 		final long RANGE_STOP = 10000;
-		
+
 		BaseJFrame baseJFrame = new BaseJFrame(RANGE_START, RANGE_STOP);
-		
-		NumberTester numberTester = new NumberTester();
-		
-		numberTester.testNumbers(RANGE_START, RANGE_STOP, baseJFrame);
-		
-		
+
+		NumberTesterSwingWorker numberTesterSwingWorker = new NumberTesterSwingWorker(
+				baseJFrame, RANGE_START, RANGE_STOP);
+
+		numberTesterSwingWorker.run();
+
 	}
 
 }
