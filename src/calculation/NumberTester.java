@@ -12,7 +12,7 @@ import javax.swing.SwingWorker;
  * 
  * @author Albin Engström
  */
-public class NumberTesterSwingWorker extends SwingWorker<List<Long>, Long> {
+public class NumberTester extends SwingWorker<List<Long>, Long> {
 
 	/**
 	 * The BaseJFrame used as a GUI
@@ -49,8 +49,7 @@ public class NumberTesterSwingWorker extends SwingWorker<List<Long>, Long> {
 	 * @param longRangeStop
 	 *            The end of the range
 	 */
-	public NumberTesterSwingWorker(BaseJFrame baseJFrame, long rangeStart,
-			long rangeStop) {
+	public NumberTester(BaseJFrame baseJFrame, long rangeStart, long rangeStop) {
 
 		// Initialize variables
 		this.baseJFrame = baseJFrame;

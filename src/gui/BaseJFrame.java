@@ -1,6 +1,9 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -10,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import calculation.NumberTester;
 
 /**
  * @author Albin Engström
@@ -78,9 +83,17 @@ public class BaseJFrame extends JFrame {
 	long rangeSize;
 
 	/**
+	 * The NumberTesters doing the work
+	 */
+	Vector<NumberTester> numberTesters = new Vector<NumberTester>();
+
+	/**
 	 * Constructor
 	 */
 	public BaseJFrame(long rangeStart, long rangeStop) {
+
+		// Create a NumberTester and add it to numberTesters
+		numberTesters.add(new NumberTester(this, rangeStart, rangeStop));
 
 		// Set rangeSize
 		rangeSize = rangeStop - rangeStart + 1;
@@ -124,6 +137,22 @@ public class BaseJFrame extends JFrame {
 
 		// Create a JPanel for the buttons
 		JPanel buttonPanel = new JPanel();
+
+		// Set jButtonStart to call the first NumberTester in numberTesters run
+		// method
+		jButtonStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numberTesters.get(0).run();
+			}
+		});
+
+		// Set jButtonStop to call the first NumberTester in numberTesters
+		// cancel method
+		jButtonStop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numberTesters.get(0).cancel(true);
+			}
+		});
 
 		// Add the buttons to buttonPanel
 		buttonPanel.add(jButtonStart);

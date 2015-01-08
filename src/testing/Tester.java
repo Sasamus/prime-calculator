@@ -1,7 +1,6 @@
 package testing;
 
 import gui.BaseJFrame;
-import calculation.NumberTesterSwingWorker;
 
 /**
  * Class to test things
@@ -19,12 +18,6 @@ public class Tester {
 		final long RANGE_STOP = 10000;
 
 		BaseJFrame baseJFrame = new BaseJFrame(RANGE_START, RANGE_STOP);
-
-		NumberTesterSwingWorker numberTesterSwingWorker = new NumberTesterSwingWorker(
-				baseJFrame, RANGE_START, RANGE_STOP);
-
-		numberTesterSwingWorker.run();
-
 	}
 
 }
