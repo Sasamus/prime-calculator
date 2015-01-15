@@ -1,8 +1,8 @@
 package calculation;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
@@ -11,7 +11,7 @@ import javax.swing.SwingWorker;
  * 
  * @author Albin Engström
  */
-public class NumberTester extends SwingWorker<List<Long>, Long> {
+public class NumberTester extends SwingWorker<Integer, Long> {
 
 	/**
 	 * The JTextArea used to show the found numbers
@@ -31,30 +31,32 @@ public class NumberTester extends SwingWorker<List<Long>, Long> {
 	/**
 	 * The number of numbers in the range
 	 */
-	long nrOfNumbers;
+	Long nrOfNumbers;
 
 	/**
-	 * Found numbers
+	 * Number of found found numbers
 	 */
-	List<Long> foundNumbers = new ArrayList<Long>();
+	SharedLong nrFoundNumbers;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param textArea
-	 *            The TextArea to print output to
-	 * @param rangeStart
-	 *            The start of the range
-	 * @param longRangeStop
-	 *            The end of the range
+	 * A String to hold the text show before nrFoundPrimes
 	 */
-	// public NumberTester(BaseJFrame baseJFrame, long rangeStart, long
-	// rangeStop) {
-	public NumberTester(JTextArea jTextArea, long rangeStart, long rangeStop) {
+	String nrFoundNumbersText;
+
+	/**
+	 * A JLabel to show the number of found primes
+	 */
+	JLabel nrFoundNumbersLabel;
+
+	public NumberTester(JTextArea numberOutput, JLabel foundNumbers,
+			String foundNumbersText, SharedLong nrFoundNumbers,
+			long rangeStart, long rangeStop) {
 
 		// Initialize variables
-		// this.baseJFrame = baseJFrame;
-		this.jTextArea = jTextArea;
+		this.nrFoundNumbers = nrFoundNumbers;
+		this.nrFoundNumbersLabel = foundNumbers;
+		this.nrFoundNumbersText = foundNumbersText;
+		this.jTextArea = numberOutput;
 		this.rangeStart = rangeStart;
 		this.rangeStop = rangeStop;
 		this.nrOfNumbers = rangeStop - rangeStart + 1;
@@ -66,13 +68,13 @@ public class NumberTester extends SwingWorker<List<Long>, Long> {
 	 * @see javax.swing.SwingWorker#doInBackground()
 	 */
 	@Override
-	protected List<Long> doInBackground() throws Exception {
+	protected Integer doInBackground() throws Exception {
 
 		// Test Numbers
 		testNumbers();
 
-		// Return foundNumbers
-		return foundNumbers;
+		// Return 0
+		return 0;
 	}
 
 	/**
@@ -97,13 +99,11 @@ public class NumberTester extends SwingWorker<List<Long>, Long> {
 				// Check if i is a prime
 				if (PrimeTest.isPrime(i)) {
 
-					// Add i to foundNumbers
-					// foundNumbers.add(i);
+					// Publish i
 					publish(i);
 
 					// Set progress in percent
-					// setProgress((int) (100 * foundNumbers.size() /
-					// nrOfNumbers));
+					setProgress((int) (100 * nrFoundNumbers.getValue() / nrOfNumbers));
 				}
 			}
 		}
@@ -120,13 +120,22 @@ public class NumberTester extends SwingWorker<List<Long>, Long> {
 		// A String to hold the text
 		String tmpString = "";
 
-		// Iterate through chunks and add all elements to tmpString
+		// Iterate through chunks
 		for (Long nr : chunks) {
+
+			// Add nr to tmpString
 			tmpString = tmpString + nr + ", ";
+
+			// Increment nrFoundNumbers
+			nrFoundNumbers.setValue(nrFoundNumbers.getValue() + 1);
 		}
 
 		// Append tmpString to jTextArea
 		jTextArea.append(tmpString);
+
+		// Set nrFoundNumbersLabel to show the new nrFoundNumbers
+		nrFoundNumbersLabel.setText(nrFoundNumbersText
+				+ nrFoundNumbers.getValue());
 
 	}
 }

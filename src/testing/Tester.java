@@ -17,7 +17,7 @@ public class Tester {
 	public static void main(String[] args) {
 
 		final long RANGE_START = 1;
-		final long RANGE_STOP = 1000;
+		final long RANGE_STOP = 100000;
 
 		BaseJFrame baseJFrame = new BaseJFrame(RANGE_START, RANGE_STOP, 10, 1);
 		

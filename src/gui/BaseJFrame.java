@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import calculation.NumberTester;
+import calculation.SharedLong;
 
 /**
  * @author Albin Engström
@@ -43,9 +44,9 @@ public class BaseJFrame extends JFrame {
 	JTextArea jTextArea = new JTextArea("");
 
 	/**
-	 * A long to hold the number of found primes
+	 * A Long to hold the number of found primes
 	 */
-	long nrFoundPrimes = 0;
+	SharedLong nrFoundPrimes = new SharedLong();
 
 	/**
 	 * A String to hold the text show before nrFoundPrimes
@@ -56,7 +57,7 @@ public class BaseJFrame extends JFrame {
 	 * A JLabel to show the number of found primes
 	 */
 	JLabel jLabelNrFoundPrimes = new JLabel(nrFoundPrimesText
-			+ Long.toString(nrFoundPrimes));
+			+ nrFoundPrimes.getValue());
 
 	/**
 	 * A JButton for start
@@ -130,16 +131,18 @@ public class BaseJFrame extends JFrame {
 				// Create a new NumberTester and add it to numberTesters, pass
 				// rangeStop to it
 				// it should stop at the final end of the range
-				numberTesters.add((new NumberTester(jTextArea, tmpRangeStart,
-						rangeStop)));
+				numberTesters.add((new NumberTester(jTextArea,
+						jLabelNrFoundPrimes, nrFoundPrimesText, nrFoundPrimes,
+						tmpRangeStart, rangeStop)));
 
 			} else {
 
 				// Create a new NumberTester and add it to numberTesters, pass
 				// tmpRangeStop to it
 				// it should stop at it's own personal end of range
-				numberTesters.add((new NumberTester(jTextArea, tmpRangeStart,
-						tmpRangeStop)));
+				numberTesters.add((new NumberTester(jTextArea,
+						jLabelNrFoundPrimes, nrFoundPrimesText, nrFoundPrimes,
+						tmpRangeStart, tmpRangeStop)));
 
 				// Increase the temporary range markers to fit the next one
 				tmpRangeStart = tmpRangeStop + 1;
