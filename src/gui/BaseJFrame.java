@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -85,6 +87,16 @@ public class BaseJFrame extends JFrame {
 	long rangeSize;
 
 	/**
+	 * Number of NumberTester objects
+	 */
+	long nrOfNumberTesters;
+
+	/**
+	 * The progress in percent
+	 */
+	double progress = 0;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param rangeStart
@@ -104,7 +116,7 @@ public class BaseJFrame extends JFrame {
 				.newFixedThreadPool(threads);
 
 		// Calculate the required number of "full" NumberTesters
-		long nrOfNumberTesters = (long) Math.floor((rangeStop - rangeStart)
+		nrOfNumberTesters = (long) Math.floor((rangeStop - rangeStart)
 				/ chunkSize);
 
 		// Get the remainder of the division
@@ -119,34 +131,58 @@ public class BaseJFrame extends JFrame {
 
 		// Temporary range markers to work with
 		long tmpRangeStart = rangeStart;
-		long tmpRangeStop = rangeStart + chunkSize - 1;
+		long tmpRangeStop = rangeStart + chunkSize;
 
 		// Redo nrOfNumberTesters times
 		for (long i = 0; i < nrOfNumberTesters; i++) {
 
-			// If we are at the last nummberTester and it have a < chunkSize
-			// workload
-			if (i == nrOfNumberTesters - 1 && remainder != 0) {
+			// If we are at the last nummberTester
+			if (i == nrOfNumberTesters - 1 && tmpRangeStart <= rangeStop) {
 
-				// Create a new NumberTester and add it to numberTesters, pass
-				// rangeStop to it
-				// it should stop at the final end of the range
+				// Create a new NumberTester and add it to numberTesters,
+				// pass rangeStop to it.
+				// It should stop at the final end of the range
 				numberTesters.add((new NumberTester(jTextArea,
 						jLabelNrFoundPrimes, nrFoundPrimesText, nrFoundPrimes,
 						tmpRangeStart, rangeStop)));
 
-			} else {
+			} else if (tmpRangeStop <= rangeStop) {
 
-				// Create a new NumberTester and add it to numberTesters, pass
-				// tmpRangeStop to it
-				// it should stop at it's own personal end of range
+				// Create a new NumberTester and add it to numberTesters,
+				// pass tmpRangeStop to it.
+				// It should stop at it's own personal end of range
 				numberTesters.add((new NumberTester(jTextArea,
 						jLabelNrFoundPrimes, nrFoundPrimesText, nrFoundPrimes,
 						tmpRangeStart, tmpRangeStop)));
 
 				// Increase the temporary range markers to fit the next one
 				tmpRangeStart = tmpRangeStop + 1;
-				tmpRangeStop = tmpRangeStart + chunkSize - 1;
+				tmpRangeStop = tmpRangeStart + chunkSize;
+			}
+
+			if (tmpRangeStop <= rangeStop || tmpRangeStart <= rangeStop) {
+
+				numberTesters.get((int) i).addPropertyChangeListener(
+
+				new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent event) {
+
+						if ("progress".equals(event.getPropertyName())) {
+
+							Integer onesProgress = (Integer) event
+									.getNewValue();
+
+							double value = ((double) onesProgress / (double) nrOfNumberTesters);
+
+							progress = progress + value;
+
+							jProgressBar.setValue((int) Math.floor(progress));
+
+						}
+					}
+				});
 			}
 
 		}
@@ -204,8 +240,7 @@ public class BaseJFrame extends JFrame {
 			}
 		});
 
-		// Set jButtonStop to call the first NumberTester in numberTesters
-		// cancel method
+		// Set jButtonStop to cancel the numberTester objects
 		jButtonStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (NumberTester numberTester : numberTesters) {

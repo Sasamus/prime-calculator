@@ -15,7 +15,7 @@ public class SharedLong {
 	/**
 	 * @return the value
 	 */
-	public long getValue() {
+	public synchronized long getValue() {
 		return value;
 	}
 
@@ -23,7 +23,7 @@ public class SharedLong {
 	 * @param value
 	 *            the value to set
 	 */
-	public void setValue(long value) {
+	public synchronized void setValue(long value) {
 		this.value = value;
 	}
 }

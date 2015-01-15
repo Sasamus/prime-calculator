@@ -91,7 +91,7 @@ public class NumberTester extends SwingWorker<Integer, Long> {
 	public void testNumbers() {
 
 		// Run through the range
-		for (long i = rangeStart; i < rangeStop; i++) {
+		for (long i = rangeStart; i <= rangeStop; i++) {
 
 			// Check if the SwingWorker is cancelled
 			if (!isCancelled()) {
@@ -99,11 +99,14 @@ public class NumberTester extends SwingWorker<Integer, Long> {
 				// Check if i is a prime
 				if (PrimeTest.isPrime(i)) {
 
-					// Publish i
-					publish(i);
+					// Increment nrFoundNumbers
+					nrFoundNumbers.setValue(nrFoundNumbers.getValue() + 1);
 
 					// Set progress in percent
-					setProgress((int) (100 * nrFoundNumbers.getValue() / nrOfNumbers));
+					setProgress((int) (100 * (double) nrFoundNumbers.getValue() / (double) nrOfNumbers));
+
+					// Publish i
+					publish(i);
 				}
 			}
 		}
@@ -125,9 +128,6 @@ public class NumberTester extends SwingWorker<Integer, Long> {
 
 			// Add nr to tmpString
 			tmpString = tmpString + nr + ", ";
-
-			// Increment nrFoundNumbers
-			nrFoundNumbers.setValue(nrFoundNumbers.getValue() + 1);
 		}
 
 		// Append tmpString to jTextArea
@@ -138,4 +138,16 @@ public class NumberTester extends SwingWorker<Integer, Long> {
 				+ nrFoundNumbers.getValue());
 
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.SwingWorker#done()
+	 */
+	// @Override
+	// protected void done() {
+	//
+	// // Set progress to 100
+	// setProgress(100);
+	// }
 }

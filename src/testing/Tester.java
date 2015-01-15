@@ -2,6 +2,7 @@ package testing;
 
 import gui.BaseJFrame;
 
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
@@ -16,12 +17,19 @@ public class Tester {
 	 */
 	public static void main(String[] args) {
 
-		final long RANGE_START = 1;
-		final long RANGE_STOP = 100000;
+		final long RANGE_START = 2;
+		final long RANGE_STOP = 10000;
 
-		BaseJFrame baseJFrame = new BaseJFrame(RANGE_START, RANGE_STOP, 10, 1);
-		
-		baseJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				BaseJFrame baseJFrame = new BaseJFrame(RANGE_START, RANGE_STOP,
+						100, 1);
+
+				baseJFrame
+						.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			}
+		});
+
 	}
 
 }
