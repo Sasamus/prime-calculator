@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -78,22 +80,64 @@ public class BaseJFrame extends JFrame {
 	JProgressBar jProgressBar = new JProgressBar(0, 100);
 
 	/**
-	 * Number of numbers int the range
-	 */
-	long rangeSize;
-
-	/**
 	 * The NumberTesters doing the work
 	 */
 	Vector<NumberTester> numberTesters = new Vector<NumberTester>();
 
 	/**
-	 * Constructor
+	 * Number of numbers int the range
 	 */
-	public BaseJFrame(long rangeStart, long rangeStop) {
+	long rangeSize;
 
-		// Create a NumberTester and add it to numberTesters
-		numberTesters.add(new NumberTester(this, rangeStart, rangeStop));
+	/**
+	 * Constructor
+	 * 
+	 * @param rangeStart
+	 *            The number the range starts at
+	 * @param rangeStop
+	 *            The number the range stops at
+	 * @param chunkSize
+	 *            The number numbers that one NumberTester should handle
+	 * @param threads
+	 *            The number of threads to use
+	 */
+	public BaseJFrame(long rangeStart, long rangeStop, long chunkSize,
+			int threads) {
+
+		// A FixedThreadPool for the NumberTesters
+		final ExecutorService threadPool = Executors
+				.newFixedThreadPool(threads);
+
+		// Calculate the required number of "full" NumberTesters
+		long nrOfNumberTesters = (long) Math.floor((rangeStop - rangeStart)
+				/ chunkSize);
+
+		// Get the remainder of the division
+		long remainder = (rangeStop - rangeStart) % chunkSize;
+
+		// If there are numbers left over, increment nrOfNumberTesters by one to
+		// accommodate them
+		if (remainder != 0) {
+
+			nrOfNumberTesters++;
+		}
+
+		// Create the NumberTesters and add it to numberTesters
+		long tmpRangeStart = rangeStart;
+		long tmpRangeStop = rangeStart + chunkSize - 1;
+		for (long i = 0; i < nrOfNumberTesters; i++) {
+
+			if (i == nrOfNumberTesters - 1 && remainder != 0) {
+				numberTesters.add((new NumberTester(this, tmpRangeStart,
+						rangeStop)));
+			} else {
+				numberTesters.add((new NumberTester(this, tmpRangeStart,
+						tmpRangeStop)));
+				tmpRangeStart = tmpRangeStop + 1;
+				tmpRangeStop = tmpRangeStart + chunkSize - 1;
+			}
+
+		}
 
 		// Set rangeSize
 		rangeSize = rangeStop - rangeStart + 1;
@@ -138,11 +182,13 @@ public class BaseJFrame extends JFrame {
 		// Create a JPanel for the buttons
 		JPanel buttonPanel = new JPanel();
 
-		// Set jButtonStart to call the first NumberTester in numberTesters run
-		// method
+		// Set jButtonStart to execute the NumberTesters in numberTesters with
+		// threadPool
 		jButtonStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numberTesters.get(0).run();
+				for (NumberTester numberTester : numberTesters) {
+					threadPool.submit(numberTester);
+				}
 			}
 		});
 
@@ -174,7 +220,7 @@ public class BaseJFrame extends JFrame {
 	 * @param number
 	 *            The number to add
 	 */
-	public void addNumbers(List<Long> numbers) {
+	public synchronized void addNumbers(List<Long> numbers) {
 
 		// Iterate through numbers
 		for (long number : numbers) {
