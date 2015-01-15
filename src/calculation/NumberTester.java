@@ -1,10 +1,9 @@
 package calculation;
 
-import gui.BaseJFrame;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 /**
@@ -15,9 +14,9 @@ import javax.swing.SwingWorker;
 public class NumberTester extends SwingWorker<List<Long>, Long> {
 
 	/**
-	 * The BaseJFrame used as a GUI
+	 * The JTextArea used to show the found numbers
 	 */
-	BaseJFrame baseJFrame;
+	JTextArea jTextArea;
 
 	/**
 	 * The start of the range to test
@@ -49,10 +48,13 @@ public class NumberTester extends SwingWorker<List<Long>, Long> {
 	 * @param longRangeStop
 	 *            The end of the range
 	 */
-	public NumberTester(BaseJFrame baseJFrame, long rangeStart, long rangeStop) {
+	// public NumberTester(BaseJFrame baseJFrame, long rangeStart, long
+	// rangeStop) {
+	public NumberTester(JTextArea jTextArea, long rangeStart, long rangeStop) {
 
 		// Initialize variables
-		this.baseJFrame = baseJFrame;
+		// this.baseJFrame = baseJFrame;
+		this.jTextArea = jTextArea;
 		this.rangeStart = rangeStart;
 		this.rangeStop = rangeStop;
 		this.nrOfNumbers = rangeStop - rangeStart + 1;
@@ -71,18 +73,6 @@ public class NumberTester extends SwingWorker<List<Long>, Long> {
 
 		// Return foundNumbers
 		return foundNumbers;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.SwingWorker#done()
-	 */
-	@Override
-	protected void done() {
-
-		// Tell baseJFrame to add foundNumbers to it's numbers
-		baseJFrame.addNumbers(foundNumbers);
 	}
 
 	/**
@@ -108,12 +98,35 @@ public class NumberTester extends SwingWorker<List<Long>, Long> {
 				if (PrimeTest.isPrime(i)) {
 
 					// Add i to foundNumbers
-					foundNumbers.add(i);
+					// foundNumbers.add(i);
+					publish(i);
 
 					// Set progress in percent
-					setProgress((int) (100 * foundNumbers.size() / nrOfNumbers));
+					// setProgress((int) (100 * foundNumbers.size() /
+					// nrOfNumbers));
 				}
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.SwingWorker#process(java.util.List)
+	 */
+	@Override
+	protected void process(List<Long> chunks) {
+
+		// A String to hold the text
+		String tmpString = "";
+
+		// Iterate through chunks and add all elements to tmpString
+		for (Long nr : chunks) {
+			tmpString = tmpString + nr + ", ";
+		}
+
+		// Append tmpString to jTextArea
+		jTextArea.append(tmpString);
+
 	}
 }

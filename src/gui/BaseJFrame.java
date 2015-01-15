@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,12 +40,7 @@ public class BaseJFrame extends JFrame {
 	/**
 	 * A JTextField to show the found primes
 	 */
-	JTextArea jTextArea = new JTextArea();
-
-	/**
-	 * A String to hold the text to show the found primes
-	 */
-	String foundPrimesText = "";
+	JTextArea jTextArea = new JTextArea("");
 
 	/**
 	 * A long to hold the number of found primes
@@ -122,17 +116,32 @@ public class BaseJFrame extends JFrame {
 			nrOfNumberTesters++;
 		}
 
-		// Create the NumberTesters and add it to numberTesters
+		// Temporary range markers to work with
 		long tmpRangeStart = rangeStart;
 		long tmpRangeStop = rangeStart + chunkSize - 1;
+
+		// Redo nrOfNumberTesters times
 		for (long i = 0; i < nrOfNumberTesters; i++) {
 
+			// If we are at the last nummberTester and it have a < chunkSize
+			// workload
 			if (i == nrOfNumberTesters - 1 && remainder != 0) {
-				numberTesters.add((new NumberTester(this, tmpRangeStart,
+
+				// Create a new NumberTester and add it to numberTesters, pass
+				// rangeStop to it
+				// it should stop at the final end of the range
+				numberTesters.add((new NumberTester(jTextArea, tmpRangeStart,
 						rangeStop)));
+
 			} else {
-				numberTesters.add((new NumberTester(this, tmpRangeStart,
+
+				// Create a new NumberTester and add it to numberTesters, pass
+				// tmpRangeStop to it
+				// it should stop at it's own personal end of range
+				numberTesters.add((new NumberTester(jTextArea, tmpRangeStart,
 						tmpRangeStop)));
+
+				// Increase the temporary range markers to fit the next one
 				tmpRangeStart = tmpRangeStop + 1;
 				tmpRangeStop = tmpRangeStart + chunkSize - 1;
 			}
@@ -196,7 +205,9 @@ public class BaseJFrame extends JFrame {
 		// cancel method
 		jButtonStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numberTesters.get(0).cancel(true);
+				for (NumberTester numberTester : numberTesters) {
+					numberTester.cancel(true);
+				}
 			}
 		});
 
@@ -212,31 +223,5 @@ public class BaseJFrame extends JFrame {
 
 		// Set the JFrame to be visible
 		setVisible(true);
-	}
-
-	/**
-	 * Adds a number to the String showed in jTextField
-	 * 
-	 * @param number
-	 *            The number to add
-	 */
-	public synchronized void addNumbers(List<Long> numbers) {
-
-		// Iterate through numbers
-		for (long number : numbers) {
-
-			// Add number to foundPrimesText
-			foundPrimesText = foundPrimesText + " " + Long.toString(number);
-
-			// Increment nrFoundPrimes by one
-			nrFoundPrimes++;
-		}
-
-		// Set the text of jTextField to the new foundPrimesText
-		jTextArea.setText(foundPrimesText);
-
-		// Set the text of jLabelNrFoundPrimes to show the new nrFoundPrimes
-		jLabelNrFoundPrimes.setText(nrFoundPrimesText
-				+ Long.toString(nrFoundPrimes));
 	}
 }
