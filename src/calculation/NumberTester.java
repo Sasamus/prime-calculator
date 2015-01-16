@@ -152,10 +152,11 @@ public class NumberTester extends SwingWorker<Integer, Long> {
 	 * 
 	 * @see javax.swing.SwingWorker#done()
 	 */
-	// @Override
-	// protected void done() {
-	//
-	// // Set progress to 100
-	// setProgress(100);
-	// }
+	@Override
+	protected void done() {
+
+		// Set progress to 100
+		setProgress(100);
+
+	}
 }

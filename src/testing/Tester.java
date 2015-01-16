@@ -2,7 +2,6 @@ package testing;
 
 import gui.BaseJFrame;
 
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
@@ -17,18 +16,25 @@ public class Tester {
 	 */
 	public static void main(String[] args) {
 
-		final long RANGE_START = 2;
-		final long RANGE_STOP = 2580;
+		// Define default arguments
+		long rangeStart = 2;
+		long rangeStop = 1500;
+		long numbersPerWorker = 10;
+		int threads = 8;
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				BaseJFrame baseJFrame = new BaseJFrame(RANGE_START, RANGE_STOP,
-						100, 1);
+		// If the correct number of arguments are provided, apply them
+		if (args.length == 3) {
+			rangeStop = Long.parseLong(args[0]);
+			numbersPerWorker = Long.parseLong(args[1]);
+			threads = Integer.parseInt((args[2]));
+		}
 
-				baseJFrame
-						.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-			}
-		});
+		// Create a BaseJFrame with the arguments
+		BaseJFrame baseJFrame = new BaseJFrame(rangeStart, rangeStop,
+				numbersPerWorker, threads);
+		
+		// Set it to exit on close
+		baseJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 	}
 

@@ -167,7 +167,7 @@ public class BaseJFrame extends JFrame {
 			// Add a propertChangeListener to numberTester
 			numberTester.addPropertyChangeListener(
 
-					// Create a new PropertyChangeListener
+			// Create a new PropertyChangeListener
 					new PropertyChangeListener() {
 
 						// Override the propertyChange method
@@ -188,8 +188,7 @@ public class BaseJFrame extends JFrame {
 								progress = progress + value;
 
 								// Update jProgressBar with progress
-								jProgressBar.setValue((int) Math
-										.round(progress));
+								jProgressBar.setValue((int) Math.ceil(progress));
 
 							}
 						}
