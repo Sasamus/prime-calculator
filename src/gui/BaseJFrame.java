@@ -157,34 +157,43 @@ public class BaseJFrame extends JFrame {
 
 				// Increase the temporary range markers to fit the next one
 				tmpRangeStart = tmpRangeStop + 1;
-				tmpRangeStop = tmpRangeStart + chunkSize;
+				tmpRangeStop = tmpRangeStart + chunkSize - 1;
 			}
+		}
 
-			if (tmpRangeStop <= rangeStop || tmpRangeStart <= rangeStop) {
+		// Iterate through the NumberTester objects int numberTesters
+		for (NumberTester numberTester : numberTesters) {
 
-				numberTesters.get((int) i).addPropertyChangeListener(
+			// Add a propertChangeListener to numberTester
+			numberTester.addPropertyChangeListener(
 
-				new PropertyChangeListener() {
+					// Create a new PropertyChangeListener
+					new PropertyChangeListener() {
 
-					@Override
-					public void propertyChange(PropertyChangeEvent event) {
+						// Override the propertyChange method
+						@Override
+						public void propertyChange(PropertyChangeEvent event) {
 
-						if ("progress".equals(event.getPropertyName())) {
+							// Check if the changed property was "progress"
+							if ("progress".equals(event.getPropertyName())) {
 
-							Integer onesProgress = (Integer) event
-									.getNewValue();
+								// Get the progress one numberTester have made
+								Integer onesProgress = (Integer) event
+										.getNewValue();
 
-							double value = ((double) onesProgress / (double) nrOfNumberTesters);
+								// Get the total progress that amount to
+								double value = ((double) onesProgress / (double) nrOfNumberTesters);
 
-							progress = progress + value;
+								// Add it to the total progress
+								progress = progress + value;
 
-							jProgressBar.setValue((int) Math.floor(progress));
+								// Update jProgressBar with progress
+								jProgressBar.setValue((int) Math
+										.round(progress));
 
+							}
 						}
-					}
-				});
-			}
-
+					});
 		}
 
 		// Set rangeSize

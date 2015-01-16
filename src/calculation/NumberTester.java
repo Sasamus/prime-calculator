@@ -34,7 +34,12 @@ public class NumberTester extends SwingWorker<Integer, Long> {
 	Long nrOfNumbers;
 
 	/**
-	 * Number of found found numbers
+	 * The number of numbers that have been checked
+	 */
+	Long nrCheckedNumbers = (long) 0;
+
+	/**
+	 * Number of found numbers
 	 */
 	SharedLong nrFoundNumbers;
 
@@ -96,14 +101,14 @@ public class NumberTester extends SwingWorker<Integer, Long> {
 			// Check if the SwingWorker is cancelled
 			if (!isCancelled()) {
 
+				// Increment nrCheckedNumbers
+				nrCheckedNumbers++;
+
 				// Check if i is a prime
 				if (PrimeTest.isPrime(i)) {
 
 					// Increment nrFoundNumbers
 					nrFoundNumbers.setValue(nrFoundNumbers.getValue() + 1);
-
-					// Set progress in percent
-					setProgress((int) (100 * (double) nrFoundNumbers.getValue() / (double) nrOfNumbers));
 
 					// Publish i
 					publish(i);
@@ -132,6 +137,9 @@ public class NumberTester extends SwingWorker<Integer, Long> {
 
 		// Append tmpString to jTextArea
 		jTextArea.append(tmpString);
+
+		// Set progress in percent
+		setProgress((int) (100 * (double) nrCheckedNumbers / (double) nrOfNumbers));
 
 		// Set nrFoundNumbersLabel to show the new nrFoundNumbers
 		nrFoundNumbersLabel.setText(nrFoundNumbersText
